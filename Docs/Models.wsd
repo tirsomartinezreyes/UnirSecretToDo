@@ -56,24 +56,25 @@ stop
 title Diagrama de Clases
 
 class ToDo{
-    String id
+    Integer id
     String label
-    String passPhrase
+    String userPassPhrase
+    String systemPassPhrase
     Item[] items
     AccessToken accessToken
 }
 
 class Item{
-    String Id
+    Integer Id
     Boolean isDone
     String label
 }
 
 class AccessToken{    
     String accessToken
-    Integer startTime
-    Integer endTime
-    String toDo
+    'Integer startTime
+    'Integer endTime
+    Integer toDo
 }
 
 class Log{
@@ -81,8 +82,7 @@ class Log{
     Integer time
     String  target
     String  action
-    String  oldValue
-    String  newValue
+    String  data
 }
 
 

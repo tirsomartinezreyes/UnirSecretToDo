@@ -13,10 +13,9 @@
         <?php include($_GLOBALS["BASEPATH"]."Views/Components/top.php"); ?>
         
         <div class="l-content">
-            <div class="pricing-tables pure-g">
-                <?php include_once($_GLOBALS["BASEPATH"]."Views/Components/newListView.php"); ?>
-                <?php include_once($_GLOBALS["BASEPATH"]."Views/Components/accessListView.php"); ?>
-            </div> <!-- end pricing-tables -->
+
+                <?php echo __FILE__ ?>
+                
         </div> <!-- end l-content -->
         
         <?php include($_GLOBALS["BASEPATH"]."Views/Components/footer.php"); ?>
