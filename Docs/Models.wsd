@@ -1,0 +1,304 @@
+@startuml SECRET_TODO_USECASES
+left to right direction
+
+title Diagrama de Casos de uso
+
+rectangle Navegador {
+    actor "Usuario" as U
+}
+
+rectangle Servidor {
+    usecase "Visitar Página de Inicio" as UC_home
+    usecase "Crear un Secret To-Do" as UC_createToDo
+    usecase "Acceder a un Secret To-Do" as UC_getToDo
+    usecase "Cerrar un Secret To-Do" as UC_closeToDo
+    usecase "Listar items del Secret To-Do" as UC_listToDo
+    usecase "Agregar un Item al Secret To-Do" as UC_addItem
+    usecase "Eliminar un Item del Secret To-Do" as UC_removeItem
+    usecase "Actualizar un Item del Secret To-Do" as UC_updateItem
+
+    U --> UC_home
+    U --> UC_createToDo
+    U --> UC_getToDo
+    U --> UC_closeToDo
+    U --> UC_listToDo
+    U --> UC_addItem
+    U --> UC_removeItem
+    U --> UC_updateItem
+}
+@enduml
+
+@startuml SECRET_TODO_FLOW
+scale 2
+title Diagrama de Actividad de usuario
+
+start
+:Accede a la página de inicio;
+fork
+:Crear Secret To-Do;
+fork again
+:Acceder a un Secret To-Do;
+end fork
+fork
+:Listar items en Secret To-Do;
+fork again
+:Agregar un Item al Secret To-Do;
+fork again
+:Eliminar un Item del Secret To-Do;
+fork again
+:Actualizar un Item del Secret To-Do;
+end fork
+:Cerrar un Secret To-Do;
+stop
+@enduml
+
+@startuml SECRET_TODO_ENTITIES
+title Diagrama de Clases
+
+class ToDo{
+    String id
+    String label
+    String passPhrase
+    Item[] items
+    AccessToken accessToken
+}
+
+class Item{
+    String Id
+    Boolean isDone
+    String label
+}
+
+class AccessToken{    
+    String accessToken
+    Integer startTime
+    Integer endTime
+    String toDo
+}
+
+class Log{
+    Integer id
+    Integer time
+    String  target
+    String  action
+    String  oldValue
+    String  newValue
+}
+
+
+ToDo -l- Item : tiene 0 o más >
+ToDo -r- AccessToken : Tiene un >
+
+Log -u- ToDo : Registra <
+Log -u- Item : Registra <
+Log -u- AccessToken : Registra <
+/'
+Log -- Item : Registra acciones <
+Log -- AccessToken : Registra acciones <
+
+'/
+
+'Entidades principales
+/'
+class Institution{
+    String  id
+    String  code
+    String  label
+    String  logo32
+    String  logo64
+    CertisepSettings certisepSettings
+}
+
+class Responsable{
+    String  id
+    String  curp
+    String  name
+    String  phone
+    String  lastName1
+    String  lastName2
+    Efirma  efirma
+    CertificatesResponsableSettings certificatesSettings
+    DegreesResponsableSettings  degreesSettings
+}
+
+
+
+class Student{
+    String  id
+    String  curp
+    String  nombre
+    String  primerApellido
+    String  segundoApellido
+    Date    fechaNacimiento
+    Genre   genre
+}
+
+class Career{
+    String  id
+    String  code
+    String  career
+    AcademicLevel   level
+}
+
+class Revoe {
+    String  revoe
+    String  type
+    Decimal minGrade
+    Decimal maxGrade
+    Decimal minPassingGrade
+    Date    issueDate
+    AuthorizationAcknowledgment authorizationAcknowledgment
+}
+
+class Syllabus {
+    Integer id
+    Integer decimalsForCredits
+    Decimal totalCredits
+}
+
+class Subject{
+    String  id
+    String  code
+    Decimal credits
+    SubjectType type
+    String  label
+}
+
+class Campus{
+    String  id
+    String  code
+    String  label
+    State   state
+}
+
+class Efirma{
+    String certificateNumber
+    String pem
+}
+
+class Enrollment{
+    String id
+    Student Student
+    Syllabus syllabus
+}
+
+class Grade{
+    String id
+    Decimal grade
+    Subject subject
+}
+
+class PartialElectronicCertificate{
+
+}
+
+class TotalElectronicCertificate{
+
+}
+
+class ElectronicDegree{
+
+}
+
+
+
+
+'Catalogs
+class AuthorizationAcknowledgment{
+    String  id
+    String  label
+}
+
+class State{
+    String  id
+    String  label
+}
+
+class AcademicLevel{
+    String  id
+    String  label
+}
+
+class SubjectType{
+    String  id
+    String  label
+}
+
+class Genre{
+    String  id
+    String  label
+}
+
+
+'Structuras
+class CertisepSettings{
+    Boolean inAppSign
+    String  servicePlan
+    Date    vigency
+}
+
+class CertificatesResponsableSettings{
+    String  position
+    Integer idPosition
+}
+
+class DegreesResponsableSettings{
+    String  position
+    Integer idPosition
+    String  titleAbbreviation
+}
+
+'Relaciones
+Institution -u- CertisepSettings : Se configura por >
+Institution -l- Responsable : Tiene múltiples >
+Institution -d- Student : Tiene múltiples >
+Institution -u- Campus : Tiene múltiples >
+Institution -r- Career : Tiene múltiples >
+
+Responsable -d- CertificatesResponsableSettings : Firma certificados como >
+Responsable -d- DegreesResponsableSettings : Firma títulos como >
+Responsable -u- Efirma : Tiene una >
+
+Career -r- Revoe : Tiene múltiples >
+Career -u- AcademicLevel : es de un >
+
+Campus -u- State : está en un >
+Revoe -r- Syllabus : Tiene múltiples >
+Revoe -u- AuthorizationAcknowledgment : autorización >
+
+Syllabus -u- Campus : Tiene múltiples >
+Syllabus -r- Subject : Tiene múltiples >
+Syllabus -d- Enrollment : Tiene múltiples >
+
+
+Subject -u- SubjectType : es de tipo >
+Subject -d- Grade : tiene un >
+
+Student -r- Enrollment : Tiene múltiples >
+Student -d- Genre
+
+Enrollment -d- PartialElectronicCertificate : tiene múltiples >
+Enrollment -d- TotalElectronicCertificate : tiene un >
+Enrollment -d- ElectronicDegree : tiene un >
+Enrollment -r- Grade : tiene múltiples >
+'/
+@enduml
+
+
+@startuml SECRET_TODO_TEST
+scale 2
+start
+:Add games to cart;
+:Checkout;
+:Check cookie;
+while (if cookie?) is (is invalid)
+:Show login form;
+endwhile
+fork
+:Mail invoice;
+fork again
+:Load games;
+end fork
+:Install and play;
+stop
+@enduml
