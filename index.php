@@ -6,18 +6,26 @@
     Enero 2022
 */
 
+
+
     $GLOBALS['BASEPATH'] = __DIR__."/";
-    include_once("Controllers/homeController.php");
+    session_start();
+    
+    
+    include_once($GLOBALS['BASEPATH']."Controllers/homeController.php");
     $homeController = new HomeController();
-    include_once($homeController->getViewPath($_GET['p']));
+    
+    $pageToRender = $homeController->getViewPath($_GET['p']);
+    include_once($pageToRender);
 
 
-
-    /*dumping*/
-
-    if($homeController->list){
+    /*dumping variables for debugging*/
+    /*
+    if($_SESSION['accessToken']){
         echo "<hr>To-Do:";
-        $homeController->list->dump();
+        include_once($GLOBALS['BASEPATH']."Controllers/listController.php");
+        $list = ListController::getByAccessToken($_SESSION['accessToken']);
+        $list->dump();
     }
 
     echo "<hr>GET:";
@@ -25,5 +33,8 @@
 
     echo "<hr>POST:";
     var_dump($_POST);
- 
+
+    echo "<hr>SESSION:";
+    var_dump($_SESSION);
+    */
 ?>
