@@ -9,6 +9,7 @@
 
 
     $GLOBALS['BASEPATH'] = __DIR__."/";
+    $config = include_once($GLOBALS['BASEPATH']."Config/config.php");
     session_start();
     
     
@@ -21,20 +22,21 @@
 
     /*dumping variables for debugging*/
     
-    if($_SESSION['accessToken']){
-        echo "<hr>To-Do:";
-        include_once($GLOBALS['BASEPATH']."Controllers/listController.php");
-        $list = ListController::getByAccessToken($_SESSION['accessToken']);
-        $list->dump();
+    if($config['debug']){
+        if($_SESSION['accessToken']){
+            echo "<hr>To-Do:";
+            include_once($GLOBALS['BASEPATH']."Controllers/listController.php");
+            $list = ListController::getByAccessToken($_SESSION['accessToken']);
+            $list->dump();
+        }
+
+        echo "<hr>GET:";
+        var_dump($_GET);
+
+        echo "<hr>POST:";
+        var_dump($_POST);
+
+        echo "<hr>SESSION:";
+        var_dump($_SESSION);
     }
-
-    echo "<hr>GET:";
-    var_dump($_GET);
-
-    echo "<hr>POST:";
-    var_dump($_POST);
-
-    echo "<hr>SESSION:";
-    var_dump($_SESSION);
-
 ?>

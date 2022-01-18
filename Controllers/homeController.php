@@ -60,6 +60,16 @@ class HomeController{
                     
                     return "Views/Pages/listPageView.php";
                     break;
+            
+            case "deleteItem":
+                $list = ListController::getByAccessToken($_SESSION['accessToken']);
+                
+                if($this->itemInList($list,$_POST['item'])){
+                    $list->deleteItem($_POST['item']);
+                }
+                
+                return "Views/Pages/listPageView.php";
+                break;
 
             default:
                 if(isset($_SESSION['accessToken'])){

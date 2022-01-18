@@ -12,8 +12,10 @@ $list = ListController::getByAccessToken($_SESSION['accessToken']);
 <!doctype html>
 <html lang="en">
     <?php include($_GLOBALS["BASEPATH"]."Views/Components/head.php"); ?>
-    <body>
+    <body style="padding-bottom:100px;">
         <?php include($_GLOBALS["BASEPATH"]."Views/Components/top.php"); ?>
+        
+        <!-- CABECERA DE LA LISTA -->
         <div class="l-content" style="text-align: center;">
             <div class="pure-g" style="background-color: #ffea85; padding:5px;">
                 <div class="pure-u-2-3">
@@ -23,11 +25,6 @@ $list = ListController::getByAccessToken($_SESSION['accessToken']);
                             <strong><?php echo $list->systemPassPhrase; ?></strong><br>
                             <small>(Siempre guárdalo y nunca lo pierdas o no podrás volver a accesar a esta lista)</small>
                             <form name="close" action="?p=closeList" method="POST" onsubmit="return confirm('No olvides resguardar el ID antes de cerrar o no podrás a acceder nuevamente')">
-                                    <!--
-                                        <button id="agregar" name= "" class="button-success pure-button">Success Button</button>
-                                        <button class="button-error pure-button">Error Button</button>
-                                        <button class="button-warning pure-button">Warning Button</button>
-                                    -->
                                 <button class="button-error pure-button">Cerrar</button>
                             </form>
                     </div>
@@ -43,6 +40,9 @@ $list = ListController::getByAccessToken($_SESSION['accessToken']);
                 </div>
             </div>
         </div> <!-- end l-content -->
+
+
+        <!-- CUERPO DE LA LISTA -->
         <center>
         <?php  if(count($list->items)){ ?>
             <br>
@@ -65,18 +65,27 @@ $list = ListController::getByAccessToken($_SESSION['accessToken']);
                                 <form name="completeItem_'.$item->id.'" method="POST" action="?p=completeItem">
                                     <input type="hidden" name="item" value="'.$item->id.'" />
                                     <input type="hidden" name="value" value="'.$item->isDone.'" />
-                                    <button type="submit" class="pure-button pure-input-1-2 pure-button-primary">CAMBIAR</button></td>
+                                    <button type="submit" class="pure-button pure-input-1-2 pure-button-primary">'.($item->isDone?'&#9744;':'&check;').'</button></td>
                                 </form>
                             </td>
-                            <td></td>
+                            <td>
+                                <form name="deleteItem_'.$item->id.'" method="POST" action="?p=deleteItem" onsubmit="return confirm(\'¿Deseas eliminar la tarea?\')">
+                                        <input type="hidden" name="item" value="'.$item->id.'" />
+                                        <button type="submit" class="button-error pure-button">&#10005;</button></td>
+                                </form>
+                            </td>
                         </tr>';
                     }
                     ?>
                 </tbody>
             </table>
         </center>
+        <?php } else{
 
-        <?php } ?>
+            echo '<br>Aún no tienes tareas en tu lista';
+        }?>
+
+
         <?php include($_GLOBALS["BASEPATH"]."Views/Components/footer.php"); ?>
     </body>
 </html>

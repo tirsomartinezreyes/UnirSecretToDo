@@ -81,6 +81,9 @@
             Item::setItemStatus($itemId, $status);
         }
 
+        public function deleteItem($itemId){
+            Item::deleteItem($itemId);
+        }
 
         public function dump(){
             if($this->id){

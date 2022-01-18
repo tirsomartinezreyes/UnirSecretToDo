@@ -5,4 +5,7 @@
     Programación en el servidor
     Enero 2022
 */
+return array(
+    "debug" => false
+);
 ?>

@@ -29,7 +29,7 @@ class Item{
     }
 
     
-    public static function delete($id){
+    public static function deleteItem($id){
         $db = DB::connect();
         $sqlDelete = "DELETE FROM item WHERE item.id= '$id' LIMIT 1";
         mysqli_query($db, $sqlDelete);
