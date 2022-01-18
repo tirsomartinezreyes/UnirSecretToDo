@@ -20,7 +20,7 @@
 
 
     /*dumping variables for debugging*/
-    /*
+    
     if($_SESSION['accessToken']){
         echo "<hr>To-Do:";
         include_once($GLOBALS['BASEPATH']."Controllers/listController.php");
@@ -36,5 +36,5 @@
 
     echo "<hr>SESSION:";
     var_dump($_SESSION);
-    */
+
 ?>

@@ -24,38 +24,48 @@ class HomeController{
             case "newList":
                 $list = ListController::newList($_POST['listLabel'],$_POST['listPwd']);
                 $this->setAccessTokenToSession($list);
-                return "Views/Pages/listView.php";
+                return "Views/Pages/listPageView.php";
                 break;
             
             case "verifyAccessList":
                 $list = ListController::getByIdAndPassword($_POST['listId'],$_POST["listPwd"]);
                 $this->setAccessTokenToSession($list);
-                return "Views/Pages/listView.php";
+                return "Views/Pages/listPageView.php";
                 break;
             
             case "listView":
                 $list = ListController::getByAccessToken($_SESSION['accessToken']);
-                return "Views/Pages/listView.php";
+                return "Views/Pages/listPageView.php";
                 break;
             
             case "closeList":
                 $list = ListController::getByAccessToken($_SESSION['accessToken']);
                 $list->createAccessTokenById($list->id);
                 $this->removeAccessTokenFromSession();
-                return "Views/Pages/homeView.php";
+                return "Views/Pages/homePageView.php";
                 break;
 
             case "newItem":
                 $list = ListController::getByAccessToken($_SESSION['accessToken']);
                 $list->addItem($_POST["newItem"]);
-                return "Views/Pages/listView.php";
+                return "Views/Pages/listPageView.php";
                 break;
+            
+            case "completeItem":
+                    $list = ListController::getByAccessToken($_SESSION['accessToken']);
+                    
+                    if($this->itemInList($list,$_POST['item'])){
+                        $list->setItemStatus($_POST['item'],!!!$_POST['value']);
+                    }
+                    
+                    return "Views/Pages/listPageView.php";
+                    break;
 
             default:
                 if(isset($_SESSION['accessToken'])){
-                    return "Views/Pages/listView.php";
+                    return "Views/Pages/listPageView.php";
                 }else{
-                    return "Views/Pages/homeView.php";
+                    return "Views/Pages/homePageView.php";
                 }
                 break;
             }
@@ -67,5 +77,19 @@ class HomeController{
 
     public function removeAccessTokenFromSession(){
         session_unset();
+    }
+
+    public function itemInList($list, $idItem){
+        if($list){
+            if($list->items){
+                foreach($list->items as $item){
+                    if($item->id == $idItem){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

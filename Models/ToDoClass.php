@@ -77,6 +77,10 @@
             $item = Item::saveNew($label,$this->id);
         }
 
+        public function setItemStatus($itemId, $status){
+            Item::setItemStatus($itemId, $status);
+        }
+
 
         public function dump(){
             if($this->id){

@@ -49,28 +49,32 @@ $list = ListController::getByAccessToken($_SESSION['accessToken']);
             <table class="pure-table">
                 <thead>
                     <tr>
-                        <th>Tarea</th>
-                        <th colspan>Terminado</th>
-                        <th colspan>Cambiar Estado</th>
-                        <th colspan>Borrar</th>
+                        <th colspan="4">Tarea</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <?php 
                     
                     foreach($list->items as $item){
                         echo '
                         <tr>
+                            <td>'.($item->isDone?'&check;':'&#9744;').'</td>
                             <td>'.$item->label.'</td>
-                            <td>'.($item->isDone?'SI':'NO').'</td>
-                            <td></td>
+                            <td>
+                                <form name="completeItem_'.$item->id.'" method="POST" action="?p=completeItem">
+                                    <input type="hidden" name="item" value="'.$item->id.'" />
+                                    <input type="hidden" name="value" value="'.$item->isDone.'" />
+                                    <button type="submit" class="pure-button pure-input-1-2 pure-button-primary">CAMBIAR</button></td>
+                                </form>
+                            </td>
                             <td></td>
                         </tr>';
                     }
                     ?>
                 </tbody>
             </table>
-            </center>
+        </center>
 
         <?php } ?>
         <?php include($_GLOBALS["BASEPATH"]."Views/Components/footer.php"); ?>
